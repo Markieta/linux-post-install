@@ -9,17 +9,19 @@
       mode: 0644
 
   - name: install packages
-    yum: name={{item}} state=latest update_cache=yes
+    dnf: name={{item}} state=latest update_cache=yes
     with_items:
     - "*"
     - '@Development Tools'
+    - http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_current }}.noarch.rpm
+    - http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_current }}.noarch.rpm
     - git
     - google-chrome-stable
-#    - mpv
+    - mpv
     - putty
     - redshift-gtk
     - sl
-#    - transmission-remote-gtk
+    - transmission-remote-gtk
     - tree
     - terminator
     - tmux
