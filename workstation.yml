@@ -66,6 +66,13 @@
       group: markieta
       mode: 0644
 
+  - copy:
+      src: files/home/markieta/.config/terminator/config
+      dest: /home/markieta/.config/terminator/config
+      owner: markieta
+      group: markieta
+      mode: 0664
+
   - lineinfile:
       dest: /etc/sudoers
       line: 'markieta ALL=(ALL) NOPASSWD: ALL'

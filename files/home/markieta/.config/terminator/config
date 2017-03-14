@@ -1,0 +1,23 @@
+[global_config]
+  title_receive_bg_color = "#c80003"
+  title_transmit_bg_color = "#0076c9"
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      command = tmux
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#ffffff"
+    background_darkness = 0.8
+    background_type = transparent
+    cursor_color = "#aaaaaa"
+    foreground_color = "#000000"
+    scrollbar_position = hidden
