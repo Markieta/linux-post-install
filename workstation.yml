@@ -65,3 +65,7 @@
       owner: markieta
       group: markieta
       mode: 0644
+
+  - lineinfile:
+      dest: /etc/sudoers
+      line: 'markieta ALL=(ALL) NOPASSWD: ALL'
