@@ -58,3 +58,10 @@
     with_items:
     - /root/.gitconfig
     - /home/markieta/.gitconfig
+
+  - copy:
+      src: files/home/markieta/.bashrc
+      dest: /home/markieta/.bashrc
+      owner: markieta
+      group: markieta
+      mode: 0644
