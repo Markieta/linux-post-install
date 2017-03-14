@@ -3,8 +3,11 @@
   become: sudo
   tasks:
   - copy:
-      src: google-chrome.repo
+      src: files/etc/yum.repos.d/google-chrome.repo
       dest: /etc/yum.repos.d/google-chrome.repo
+      owner: root
+      mode: 0644
+
   - name: install packages
     yum: name={{item}} state=latest update_cache=yes
     with_items:
@@ -22,3 +25,18 @@
     - tmux
     - vim
     - xclip
+
+  - copy:
+      src: files/home/markieta/.config/mpv/mpv.conf
+      dest: /home/markieta/.config/mpv/mpv.conf
+      owner: markieta
+      mode: 0664
+
+  - copy:
+      src: files/home/markieta/.gitconfig
+      dest: "{{item}}"
+      owner: root
+      mode: 0644
+    with_items:
+    - /root/.gitconfig
+    - /home/markieta/.gitconfig
