@@ -10,3 +10,4 @@ fi
 
 # User specific aliases and functions
 PS1="\h \e[30;1m\w\e[0m\n\$ "
+alias xclip='xclip -selection clipboard'
