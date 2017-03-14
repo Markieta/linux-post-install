@@ -73,6 +73,13 @@
       group: markieta
       mode: 0664
 
+  - copy:
+      src: files/home/markieta/.config/redshift.conf
+      dest: /home/markieta/.config/redshift.conf
+      owner: markieta
+      group: markieta
+      mode: 0664
+
   - lineinfile:
       dest: /etc/sudoers
       line: 'markieta ALL=(ALL) NOPASSWD: ALL'
