@@ -11,4 +11,4 @@ Download and change into project directory:
 
 Run the Playbook:
 
-`sudo ansible-playbook -i "localhost," -c local workstation.yml`
+`ansible-playbook -i "localhost," -c local --ask-become-pass workstation.yml`
