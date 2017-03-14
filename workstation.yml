@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  become: sudo
+  tasks:
+  - copy:
+      src: google-chrome.repo
+      dest: /etc/yum.repos.d/google-chrome.repo
+  - name: install packages
+    yum: name={{item}} state=latest update_cache=yes
+    with_items:
+    - "*"
+    - '@Development Tools'
+    - git
+    - google-chrome-stable
+#    - mpv
+    - putty
+    - redshift-gtk
+    - sl
+#    - transmission-remote-gtk
+    - tree
+    - terminator
+    - tmux
+    - vim
+    - xclip
