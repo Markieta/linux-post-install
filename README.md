@@ -1,5 +1,5 @@
-# fedora-post-install
-Post-installation utility to initialize a fresh Fedora installation for my liking.
+# linux-post-install
+Post-installation utility to initialize a fresh Linux installation for my liking.
 
 Install dependencies:
 
@@ -7,7 +7,7 @@ Install dependencies:
 
 Download and change into project directory:
 
-`git clone https://github.com/Markieta/fedora-post-install.git && cd fedora-post-install`
+`git clone https://github.com/Markieta/linux-post-install.git && cd linux-post-install`
 
 Run the Playbook:
 
