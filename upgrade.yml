@@ -1,7 +1,7 @@
 ---
 # Upgrade the package set
 - name: Upgrade all packages
-  package:
+  dnf:
     name: "*"
     state: latest
   when: ansible_distribution == "Fedora"
