@@ -1,85 +1,109 @@
 ---
+# Personalized workstation setup for Christopher Markieta
 - hosts: localhost
   become: yes
   tasks:
-  - copy:
+  - name: copy google chrome repo data for repos
+    copy:
       src: files/etc/yum.repos.d/google-chrome.repo
       dest: /etc/yum.repos.d/google-chrome.repo
       owner: root
       group: root
       mode: 0644
+    tags: chrome
 
   - name: upgrade all packages
     dnf:
       name: "*"
       state: latest
+    tags: update
 
   - name: install the 'Development tools' package group
     dnf:
       name: '@Development tools'
       state: present
+    tags: devtools
 
   - name: install and update packages
     dnf: name={{ item }} state=latest
     with_items:
-    - 'http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm'
-    - 'http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm'
-    - google-chrome-stable
-    - mpv
-    - putty
-    - redshift-gtk
-    - sl
-    - transmission-remote-gtk
-    - terminator
-    - tmux
-    - vim
-    - xclip
+      - 'http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm'
+      - 'http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm'
+      - google-chrome-stable
+      - mpv
+      - putty
+      - redshift-gtk
+      - sl
+      - transmission-remote-gtk
+      - terminator
+      - tmux
+      - vim
+      - xclip
+    tags: install
 
-  - file:
+  - name: create config directory for mpv
+    file:
       path: /home/markieta/.config/mpv/
       state: directory
       owner: markieta
       group: markieta
       mode: 0700
+    tags: mpvdir
 
-  - copy:
+  - name: copy mpv config
+    copy:
       src: files/home/markieta/.config/mpv/mpv.conf
       dest: /home/markieta/.config/mpv/mpv.conf
       owner: markieta
       group: markieta
       mode: 0664
+    tags: mpvconf
 
-  - copy:
+  - name: copy git config
+    copy:
       src: files/home/markieta/.gitconfig
       dest: "{{ item }}"
       owner: root
       group: markieta
       mode: 0664
     with_items:
-    - /root/.gitconfig
-    - /home/markieta/.gitconfig
+      - /root/.gitconfig
+      - /home/markieta/.gitconfig
+    tags: gitconfig
 
-  - copy:
+  - name: copy .bashrc
+    copy:
       src: files/home/markieta/.bashrc
       dest: /home/markieta/.bashrc
       owner: markieta
       group: markieta
       mode: 0644
+    tags: bashrc
 
-  - copy:
+  - name: copy terminator config
+    copy:
       src: files/home/markieta/.config/terminator/config
       dest: /home/markieta/.config/terminator/config
       owner: markieta
       group: markieta
       mode: 0664
+    tags: terminatorconf
 
-  - copy:
+  - name: copy redshift config
+    copy:
       src: files/home/markieta/.config/redshift.conf
       dest: /home/markieta/.config/redshift.conf
       owner: markieta
       group: markieta
       mode: 0664
+    tags: redshiftconf
 
-  - lineinfile:
+  - name: modify sudoers to enable passwordless sudo for user markieta
+    lineinfile:
       dest: /etc/sudoers
       line: 'markieta ALL=(ALL) NOPASSWD: ALL'
+    tags: passwordlesssudo
+
+  - name: change origin url for this project from https to git to allow push
+    command: /usr/bin/git remote set-url origin git@github.com:Markieta/linux-post-install.git
+    tags: giturl
