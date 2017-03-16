@@ -1,14 +1,14 @@
 # linux-post-install
 Post-installation utility to initialize a fresh Linux installation for my liking.
 
-Install dependencies:
+Install dependencies.
 
-`sudo dnf install ansible libselinux-python python2-dnf`
+Download and change into project directory.
 
-Download and change into project directory:
+Run the Playbook.
 
-`git clone https://github.com/Markieta/linux-post-install.git && cd linux-post-install`
-
-Run the Playbook:
-
-`ansible-playbook -i "localhost," -c local --ask-become-pass workstation.yml`
+```
+sudo dnf install ansible libselinux-python python2-dnf
+git clone https://github.com/Markieta/linux-post-install.git && cd linux-post-install
+ansible-playbook -i "localhost," -c local --ask-become-pass workstation.yml
+```
