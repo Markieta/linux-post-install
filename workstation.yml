@@ -3,32 +3,69 @@
 - hosts: localhost
   become: yes
   tasks:
-  - name: copy google chrome repo data for repos
+  - name: Copy google chrome repo data to yum.repos.d
     copy:
       src: files/etc/yum.repos.d/google-chrome.repo
       dest: /etc/yum.repos.d/google-chrome.repo
       owner: root
       group: root
       mode: 0644
+    when: ansible_distribution == "Fedora"
     tags: chrome
 
-  - name: upgrade all packages
+  - name: Add google chrome key
+    shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+    when: ansible_distribution == "Ubuntu"
+    tags: chrome
+
+  - name: Add google chrome repo
+    copy: 
+      content: "deb http://dl.google.com/linux/chrome/deb/ stable main"
+      dest: /etc/apt/sources.list.d/google-chrome.list
+      owner: root
+      group: root
+      mode: 0644
+    when: ansible_distribution == "Ubuntu"
+    tags: chrome
+
+  - name: Upgrade all packages
     package:
       name: "*"
       state: latest
+    when: ansible_distribution == "Fedora"
     tags: update
 
-  - name: install the 'Development tools' package group
-    package:
+  - name: Update all packages to the latest version
+    apt:
+      update_cache: yes
+      upgrade: dist
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install the 'Development tools' package group
+    dnf:
       name: '@Development tools'
       state: present
+    when: ansible_distribution == "Fedora"
     tags: devtools
 
-  - name: install and update packages
-    package: name={{ item }} state=latest
+  - name: Install build-essential
+    apt:
+      name: build-essential
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+    tags: devtools
+
+  - name: Install rpmfusion repositories
+    dnf: name={{ item }} state=latest
     with_items:
       - 'http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_version }}.noarch.rpm'
       - 'http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_version }}.noarch.rpm'
+    when: ansible_distribution == "Fedora"
+    tags: rpmfusion
+
+  - name: Install and update packages
+    package: name={{ item }} state=latest
+    with_items:
       - google-chrome-stable
       - mpv
       - putty
@@ -41,7 +78,7 @@
       - xclip
     tags: install
 
-  - name: create config directory for mpv
+  - name: Create config directory for mpv
     file:
       path: /home/markieta/.config/mpv/
       state: directory
@@ -50,7 +87,7 @@
       mode: 0700
     tags: mpvdir
 
-  - name: copy mpv config
+  - name: Copy mpv config
     copy:
       src: files/home/markieta/.config/mpv/mpv.conf
       dest: /home/markieta/.config/mpv/mpv.conf
@@ -59,7 +96,7 @@
       mode: 0664
     tags: mpvconf
 
-  - name: copy git config
+  - name: Copy git config
     copy:
       src: files/home/markieta/.gitconfig
       dest: "{{ item }}"
@@ -71,7 +108,7 @@
       - /home/markieta/.gitconfig
     tags: gitconfig
 
-  - name: copy .bashrc
+  - name: Copy .bashrc
     copy:
       src: files/home/markieta/.bashrc
       dest: /home/markieta/.bashrc
@@ -80,7 +117,7 @@
       mode: 0644
     tags: bashrc
 
-  - name: copy terminator config
+  - name: Copy terminator config
     copy:
       src: files/home/markieta/.config/terminator/config
       dest: /home/markieta/.config/terminator/config
@@ -89,7 +126,7 @@
       mode: 0664
     tags: terminatorconf
 
-  - name: copy redshift config
+  - name: Copy redshift config
     copy:
       src: files/home/markieta/.config/redshift.conf
       dest: /home/markieta/.config/redshift.conf
@@ -98,12 +135,12 @@
       mode: 0664
     tags: redshiftconf
 
-  - name: modify sudoers to enable passwordless sudo for user markieta
+  - name: Modify sudoers to enable passwordless sudo for user markieta
     lineinfile:
       dest: /etc/sudoers
       line: 'markieta ALL=(ALL) NOPASSWD: ALL'
     tags: passwordlesssudo
 
-  - name: change origin url for this project from https to git to allow push
+  - name: Change origin url for this project from https to git to allow push
     command: /usr/bin/git remote set-url origin git@github.com:Markieta/linux-post-install.git
     tags: giturl
