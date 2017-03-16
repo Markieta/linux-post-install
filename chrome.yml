@@ -1,0 +1,32 @@
+---
+# Install Google Chrome Stable
+- name: Copy Google Chrome repo data to yum.repos.d
+  copy:
+    src: files/etc/yum.repos.d/google-chrome.repo
+    dest: /etc/yum.repos.d/google-chrome.repo
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_distribution == "Fedora"
+
+- block:
+  - name: Add Google Chrome key
+    shell: wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+  
+  - name: Add Google Chrome repo
+    copy:
+      content: "deb http://dl.google.com/linux/chrome/deb/ stable main"
+      dest: /etc/apt/sources.list.d/google-chrome.list
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Fetch the list of available updates
+    apt:
+      update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Google Chrome Stable
+  package:
+    name: google-chrome-stable
+    state: latest

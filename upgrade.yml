@@ -1,0 +1,13 @@
+---
+# Upgrade the package set
+- name: Upgrade all packages
+  package:
+    name: "*"
+    state: latest
+  when: ansible_distribution == "Fedora"
+
+- name: Update all packages to the latest version
+  apt:
+    update_cache: yes
+    upgrade: dist
+  when: ansible_distribution == "Ubuntu"

@@ -1,0 +1,13 @@
+---
+# Install Development and Build Tools
+- name: Install the 'Development tools' package group
+  dnf:
+    name: '@Development tools'
+    state: present
+  when: ansible_distribution == "Fedora"
+
+- name: Install build-essential
+  apt:
+    name: build-essential
+    state: latest
+  when: ansible_distribution == "Ubuntu"
