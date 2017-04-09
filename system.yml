@@ -1,0 +1,16 @@
+---
+# Configure system
+- name: Create Windows mount point
+  file:
+    path: /windows
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags: windowsdir
+
+- name: Mount the Windows file system on startup
+  lineinfile:
+    dest: /etc/fstab
+    line: 'LABEL=Windows           /windows                ntfs    defaults        0 0'
+  tags: mountwindows

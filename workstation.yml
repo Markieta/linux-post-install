@@ -7,3 +7,4 @@
     - include: upgrade.yml
     - include: devtools.yml
     - include: utilities.yml
+    - include: system.yml
