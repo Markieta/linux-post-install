@@ -12,6 +12,7 @@
   package: name={{ item }} state=latest
   with_items:
     - mpv
+    - nmap
     - transmission-remote-gtk
     - terminator
     - tmux
