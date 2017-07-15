@@ -12,7 +12,6 @@
   package: name={{ item }} state=latest
   with_items:
     - mpv
-    - redshift-gtk
     - transmission-remote-gtk
     - terminator
     - tmux
@@ -67,15 +66,6 @@
     group: markieta
     mode: 0664
   tags: terminatorconf
-
-- name: Copy redshift config
-  copy:
-    src: files/home/markieta/.config/redshift.conf
-    dest: /home/markieta/.config/redshift.conf
-    owner: markieta
-    group: markieta
-    mode: 0664
-  tags: redshiftconf
 
 - name: Modify sudoers to enable passwordless sudo for user markieta
   lineinfile:
