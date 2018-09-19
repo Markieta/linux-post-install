@@ -59,6 +59,15 @@
     mode: 0644
   tags: bashrc
 
+- name: Create config directory for terminator
+  file:
+    path: /home/markieta/.config/terminator/
+    state: directory
+    owner: markieta
+    group: markieta
+    mode: 0664
+  tags: terminatordir
+
 - name: Copy terminator config
   copy:
     src: files/home/markieta/.config/terminator/config
