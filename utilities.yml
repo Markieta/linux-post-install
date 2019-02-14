@@ -11,6 +11,7 @@
 - name: Install and update packages
   package: name={{ item }} state=latest
   with_items:
+    - gnome-tweak-tool
     - mpv
     - nmap
     - shotwell
