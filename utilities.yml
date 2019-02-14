@@ -13,6 +13,7 @@
   with_items:
     - mpv
     - nmap
+    - shotwell
     - transmission-remote-gtk
     - terminator
     - tmux
